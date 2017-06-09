@@ -2,7 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,35 +34,30 @@ public class ShopTest {
     @Test
     public void shouldBeAbleToAddProductsToShop() {
         shop.addProduct(BOTTLE_OF_WATER);
-
         assertThat(listOfItems.get(0)).isNotNull();
     }
 
     @Test
-    public void shouldRemoveItemWhenItWasSold(){
+    public void shouldRemoveItemWhenItWasSold() {
         shop.addProduct(BOTTLE_OF_WATER);
-
         Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
-
         assertThat(result).isEqualTo(BOTTLE_OF_WATER);
         assertThat(listOfItems).doesNotContain(BOTTLE_OF_WATER);
     }
 
     @Test
-    public void shouldReturnNullWhenItemNotExists(){
+    public void shouldReturnNullWhenItemNotExists() {
         Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
 
         assertThat(result).isNull();
     }
 
     @Test
-    public void shouldSaveSoldItemToDatabaseWhenSellItemCalled(){
+    public void shouldSaveSoldItemToDatabaseWhenSellItemCalled() {
         shop.addProduct(BOTTLE_OF_WATER);
-
         Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
 
         Mockito.verify(ourDatabase).saveItem(ArgumentMatchers.any(Item.class));
+
     }
-
-
 }
