@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.List;
 
 public class Shop {
@@ -25,7 +26,11 @@ public class Shop {
         return result;
     }
 
-    public void filter(){
+    public boolean wasItemSold(Item item) {
+        try {
+            return ourDatabase.isInDatabase(item);
+        }catch (IOException e){
+            throw new IllegalStateException("ILLEGAL STATE");
+        }
     }
-
 }

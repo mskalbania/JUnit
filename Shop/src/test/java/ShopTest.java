@@ -2,6 +2,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,31 @@ public class ShopTest {
         Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
 
         Mockito.verify(ourDatabase).saveItem(ArgumentMatchers.any(Item.class));
+    }
 
+    @Test
+    public void shouldReturnTrueWhenItemWasSold() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(BOTTLE_OF_WATER)).thenReturn(true);
+        boolean result = shop.wasItemSold(BOTTLE_OF_WATER);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseWhenItmWasNotSold(){
+        boolean result = shop.wasItemSold(BOTTLE_OF_WATER);
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnFalseWhenIsInDatabaseReturnFalse() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(BOTTLE_OF_WATER)).thenReturn(false);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldThrowExceptionWhenConnectionToDBWasLost() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(ArgumentMatchers.any(Item.class)))
+                .thenThrow(IllegalStateException.class);
+
+        shop.wasItemSold(BOTTLE_OF_WATER);
     }
 }
