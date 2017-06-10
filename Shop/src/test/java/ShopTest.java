@@ -18,7 +18,7 @@ public class ShopTest {
     private Shop shop;
 
     private List<Item> listOfItems;
-
+    private DiscountService discountService;
     private SoldItemsDBI ourDatabase;
 
     @Before //Method annotated like this will be called before every test
@@ -32,13 +32,7 @@ public class ShopTest {
     public void shouldCreateNonNullObject() {
         assertThat(shop).isNotNull();
     }
-
-    @Test
-    public void shouldBeAbleToAddProductsToShop() {
-        shop.addProduct(BOTTLE_OF_WATER);
-        assertThat(listOfItems.get(0)).isNotNull();
-    }
-
+    
     @Test
     public void shouldRemoveItemWhenItWasSold() {
         shop.addProduct(BOTTLE_OF_WATER);
@@ -87,4 +81,13 @@ public class ShopTest {
 
         shop.wasItemSold(BOTTLE_OF_WATER);
     }
+
+    @Test
+    public void shouldReturnMinusOneWhenDiscountCheckerReturnedMinusOne(){
+        Mockito.when(discountService.getDiscount(BOTTLE_OF_WATER)).thenReturn(10);
+        int discount = discountService.getDiscount(BOTTLE_OF_WATER);
+
+
+    }
+
 }

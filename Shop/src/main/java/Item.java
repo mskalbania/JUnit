@@ -1,5 +1,5 @@
 
-public class Item {
+public class Item implements Comparable {
 
     private String name;
     private int price;
@@ -23,5 +23,11 @@ public class Item {
                 "name='" + name + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o == this) return 0;
+        return this.getName().compareTo(((Item) o).getName());
     }
 }
