@@ -45,9 +45,20 @@ public class Shop {
         }
     }
 
+    public Item getItem(String itemName){
+        for(Item item : listOfItems){
+            if(item.getName().equals(itemName)){
+                return item;
+            }
+        }
+        return null;
+    }
+
     int getDiscount(String item) {
-        listOfItems.sort(Comparator.comparing(Item::getName));
-        int index = Collections.binarySearch(listOfItems,new Item(item,0), Comparator.comparing(Item::getName));
-        return discountService.getDiscount(listOfItems.get(index));
+        Item tempItem = getItem(item);
+        if(tempItem != null){
+            return discountService.getDiscount(tempItem);
+        }
+        return -1;
     }
 }

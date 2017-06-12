@@ -25,7 +25,8 @@ public class ShopTest {
     public void setUp() throws Exception {
         listOfItems = new ArrayList<>();
         ourDatabase = Mockito.mock(SoldItemsDBI.class);
-        shop = new Shop(listOfItems, ourDatabase);
+        discountService = Mockito.mock(DiscountService.class);
+        shop = new Shop(listOfItems, ourDatabase,discountService);
     }
 
     @Test //This annotation mark our method as a test.
@@ -83,11 +84,13 @@ public class ShopTest {
     }
 
     @Test
-    public void shouldReturnMinusOneWhenDiscountCheckerReturnedMinusOne(){
+    public void shouldReturnDiscountWhenRequested(){
+
         Mockito.when(discountService.getDiscount(BOTTLE_OF_WATER)).thenReturn(10);
-        int discount = discountService.getDiscount(BOTTLE_OF_WATER);
+        shop.addProduct(BOTTLE_OF_WATER);
 
-
+        int discount = shop.getDiscount("Bottle of water");
+        assertThat(discount).isEqualTo(10);
     }
 
 }
