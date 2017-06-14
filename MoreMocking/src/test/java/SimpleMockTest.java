@@ -1,15 +1,27 @@
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.MockitoRule;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
+@RunWith(MockitoJUnitRunner.class)
 public class SimpleMockTest {
+
+    @Mock
+    private Set mockedSet;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
     public void someMockMethodTests() {
@@ -52,8 +64,13 @@ public class SimpleMockTest {
         assertThat(whatWasReturned).isEqualTo("Default Value");
     }
 
+    //Testing auto mocking via @Mock @ MockitoJunitRunner or @MockitoRule
     @Test
-    public void t2() {
+    public void testMockedSet() {
 
+        mockedSet.add(new NullPointerException());
+
+        verify(mockedSet).add(ArgumentMatchers.any());
     }
 }
+
